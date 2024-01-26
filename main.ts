@@ -405,12 +405,6 @@ let Damage = 0
 let PLAYERDAM = 0
 let chargeLevel = 0
 let Attacker: Sprite = null
-let Enemy1 = null
-enum ActionKind {
-    Walking,
-    Idle,
-    Jumping
-}
 Attacker = sprites.create(img`
     ........................
     ....ffffff..............
@@ -456,10 +450,6 @@ CHARGE2.attachToSprite(Attacker)
 CHARGE2.value = chargeLevel
 CHARGE2.max = 10
 CHARGE2.positionDirection(CollisionDirection.Bottom)
-ENEMY_HP = statusbars.create(20, 4, StatusBarKind.Health)
-ENEMY_HP.value = 50
-ENEMY_HP.attachToSprite(ALIEN)
-ENEMY_HP.setLabel("HP")
 game.onUpdateInterval(10000, function () {
     ALIEN = sprites.create(img`
         . . . . . . . . . . . . . . . . 
@@ -483,4 +473,8 @@ game.onUpdateInterval(10000, function () {
     ALIEN.follow(Attacker, 20)
     EnemySpawn = [0, 1]
     ALIEN.setPosition(randint(0, scene.screenWidth()), 0)
+    ENEMY_HP = statusbars.create(20, 4, StatusBarKind.Health)
+    ENEMY_HP.value = 50
+    ENEMY_HP.attachToSprite(ALIEN)
+    ENEMY_HP.setLabel("HP")
 })
