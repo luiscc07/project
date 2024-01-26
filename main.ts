@@ -1,18 +1,13 @@
-enum ActionKind {
-    Walking,
-    Idle,
-    Jumping
-}
 namespace SpriteKind {
     export const DEAD = SpriteKind.create()
 }
 namespace StatusBarKind {
     export const CHARGE = StatusBarKind.create()
 }
-function CHARGEVISUAL(mySprite: Sprite, num: number) {
-
+function CHARGEVISUAL (mySprite: Sprite, num: number) {
+	
 }
-function ENEMYHP(num: number, mySprite: Sprite) {
+function ENEMYHP (num: number, mySprite: Sprite) {
     if (ENEMY_HP.value == 50) {
         ENEMY_HP.setColor(7, 7)
     }
@@ -30,8 +25,8 @@ controller.B.onEvent(ControllerButtonEvent.Pressed, function () {
 controller.player1.onButtonEvent(ControllerButton.Up, ControllerButtonEvent.Pressed, function () {
     if (HP.value > 0) {
         animation.runImageAnimation(
-            Attacker,
-            [img`
+        Attacker,
+        [img`
             . . . . . . f f f f . . . . . . 
             . . . . f f e e e e f f . . . . 
             . . . f e e e f f e e e f . . . 
@@ -48,7 +43,7 @@ controller.player1.onButtonEvent(ControllerButton.Up, ControllerButtonEvent.Pres
             . . 4 4 f 4 4 4 4 4 4 f 4 4 . . 
             . . . . . f f f f f f . . . . . 
             . . . . . f f . . f f . . . . . 
-            `, img`
+            `,img`
             . . . . . . . . . . . . . . . . 
             . . . . . . f f f f . . . . . . 
             . . . . f f e e e e f f . . . . 
@@ -65,7 +60,7 @@ controller.player1.onButtonEvent(ControllerButton.Up, ControllerButtonEvent.Pres
             . . . 4 f 2 2 2 2 2 e d d 4 . . 
             . . . e f f f f f f e e 4 . . . 
             . . . . f f f . . . . . . . . . 
-            `, img`
+            `,img`
             . . . . . . f f f f . . . . . . 
             . . . . f f e e e e f f . . . . 
             . . . f e e e f f e e e f . . . 
@@ -82,7 +77,7 @@ controller.player1.onButtonEvent(ControllerButton.Up, ControllerButtonEvent.Pres
             . . 4 4 f 4 4 4 4 4 4 f 4 4 . . 
             . . . . . f f f f f f . . . . . 
             . . . . . f f . . f f . . . . . 
-            `, img`
+            `,img`
             . . . . . . . . . . . . . . . . 
             . . . . . . f f f f . . . . . . 
             . . . . f f e e e e f f . . . . 
@@ -100,15 +95,15 @@ controller.player1.onButtonEvent(ControllerButton.Up, ControllerButtonEvent.Pres
             . . . 4 e e f f f f f f e . . . 
             . . . . . . . . . f f f . . . . 
             `],
-            500,
-            false
+        500,
+        false
         )
     }
 })
 controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
     chargeLevel = chargeLevel + 1
 })
-function ENEMYTAKEDAMAGE(num: number, num2: number, mySprite: Sprite) {
+function ENEMYTAKEDAMAGE (num: number, num2: number, mySprite: Sprite) {
     ENEMY_HP.value = ENEMY_HP.value - PLAYERDAM
     if (ENEMY_HP.value == 0) {
         sprites.destroy(ALIEN)
@@ -123,8 +118,8 @@ sprites.onOverlap(SpriteKind.Enemy, SpriteKind.Projectile, function (sprite, oth
 controller.player1.onButtonEvent(ControllerButton.Right, ControllerButtonEvent.Pressed, function () {
     if (HP.value > 0) {
         animation.runImageAnimation(
-            Attacker,
-            [img`
+        Attacker,
+        [img`
             . . . . . . f f f f f f . . . . 
             . . . . f f e e e e f 2 f . . . 
             . . . f f e e e e f 2 2 2 f . . 
@@ -141,7 +136,7 @@ controller.player1.onButtonEvent(ControllerButton.Right, ControllerButtonEvent.P
             . . . . . f e e f 4 5 5 f . . . 
             . . . . . . f f f f f f . . . . 
             . . . . . . . f f f . . . . . . 
-            `, img`
+            `,img`
             . . . . . . . . . . . . . . . . 
             . . . . . . f f f f f f . . . . 
             . . . . f f e e e e f 2 f . . . 
@@ -158,7 +153,7 @@ controller.player1.onButtonEvent(ControllerButton.Right, ControllerButtonEvent.P
             . . . . f f f e e f 5 5 f f . . 
             . . . . f f f f f f f f f f . . 
             . . . . . f f . . . f f f . . . 
-            `, img`
+            `,img`
             . . . . . . f f f f f f . . . . 
             . . . . f f e e e e f 2 f . . . 
             . . . f f e e e e f 2 2 2 f . . 
@@ -175,7 +170,7 @@ controller.player1.onButtonEvent(ControllerButton.Right, ControllerButtonEvent.P
             . . . . . f e e f 4 5 5 f . . . 
             . . . . . . f f f f f f . . . . 
             . . . . . . . f f f . . . . . . 
-            `, img`
+            `,img`
             . . . . . . . . . . . . . . . . 
             . . . . . . f f f f f f . . . . 
             . . . . f f e e e e f 2 f . . . 
@@ -193,12 +188,12 @@ controller.player1.onButtonEvent(ControllerButton.Right, ControllerButtonEvent.P
             . . . . f f f f f f f f f f . . 
             . . . . . f f . . . f f f . . . 
             `],
-            500,
-            false
+        500,
+        false
         )
     }
 })
-function HP2(num: number, mySprite: Sprite) {
+function HP2 (num: number, mySprite: Sprite) {
     if (HP.value == 100) {
         HP.setColor(7, 7, 2)
     }
@@ -209,7 +204,7 @@ function HP2(num: number, mySprite: Sprite) {
         HP.setColor(2, 2, 2)
     }
 }
-function ApplyDamage(num: number, num2: number, mySprite: Sprite) {
+function ApplyDamage (num: number, num2: number, mySprite: Sprite) {
     HP.value = HP.value - Damage
     if (HP.value == 0) {
         sprites.destroy(Attacker)
@@ -244,8 +239,8 @@ function ApplyDamage(num: number, num2: number, mySprite: Sprite) {
 controller.player1.onButtonEvent(ControllerButton.Left, ControllerButtonEvent.Pressed, function () {
     if (HP.value > 0) {
         animation.runImageAnimation(
-            Attacker,
-            [img`
+        Attacker,
+        [img`
             . . . . f f f f f f . . . . . . 
             . . . f 2 f e e e e f f . . . . 
             . . f 2 2 2 f e e e e f f . . . 
@@ -262,7 +257,7 @@ controller.player1.onButtonEvent(ControllerButton.Left, ControllerButtonEvent.Pr
             . . . f 5 5 4 f e e f . . . . . 
             . . . . f f f f f f . . . . . . 
             . . . . . . f f f . . . . . . . 
-            `, img`
+            `,img`
             . . . . . . . . . . . . . . . . 
             . . . . f f f f f f . . . . . . 
             . . . f 2 f e e e e f f . . . . 
@@ -279,7 +274,7 @@ controller.player1.onButtonEvent(ControllerButton.Left, ControllerButtonEvent.Pr
             . . f f 5 5 f e e f f f . . . . 
             . . f f f f f f f f f f . . . . 
             . . . f f f . . . f f . . . . . 
-            `, img`
+            `,img`
             . . . . f f f f f f . . . . . . 
             . . . f 2 f e e e e f f . . . . 
             . . f 2 2 2 f e e e e f f . . . 
@@ -296,7 +291,7 @@ controller.player1.onButtonEvent(ControllerButton.Left, ControllerButtonEvent.Pr
             . . . f 5 5 4 f e e f . . . . . 
             . . . . f f f f f f . . . . . . 
             . . . . . . f f f . . . . . . . 
-            `, img`
+            `,img`
             . . . . . . . . . . . . . . . . 
             . . . . f f f f f f . . . . . . 
             . . . f 2 f e e e e f f . . . . 
@@ -314,16 +309,16 @@ controller.player1.onButtonEvent(ControllerButton.Left, ControllerButtonEvent.Pr
             . . f f f f f f f f f f . . . . 
             . . . f f f . . . f f . . . . . 
             `],
-            500,
-            false
+        500,
+        false
         )
     }
 })
 controller.player1.onButtonEvent(ControllerButton.Down, ControllerButtonEvent.Pressed, function () {
     if (HP.value > 0) {
         animation.runImageAnimation(
-            Attacker,
-            [img`
+        Attacker,
+        [img`
             . . . . . . f f f f . . . . . . 
             . . . . f f f 2 2 f f f . . . . 
             . . . f f f 2 2 2 2 f f f . . . 
@@ -340,7 +335,7 @@ controller.player1.onButtonEvent(ControllerButton.Down, ControllerButtonEvent.Pr
             . . 4 4 f 4 4 5 5 4 4 f 4 4 . . 
             . . . . . f f f f f f . . . . . 
             . . . . . f f . . f f . . . . . 
-            `, img`
+            `,img`
             . . . . . . . . . . . . . . . . 
             . . . . . . f f f f . . . . . . 
             . . . . f f f 2 2 f f f . . . . 
@@ -357,7 +352,7 @@ controller.player1.onButtonEvent(ControllerButton.Down, ControllerButtonEvent.Pr
             . . . . f 4 4 5 5 f e e . . . . 
             . . . . f f f f f f f . . . . . 
             . . . . f f f . . . . . . . . . 
-            `, img`
+            `,img`
             . . . . . . f f f f . . . . . . 
             . . . . f f f 2 2 f f f . . . . 
             . . . f f f 2 2 2 2 f f f . . . 
@@ -374,7 +369,7 @@ controller.player1.onButtonEvent(ControllerButton.Down, ControllerButtonEvent.Pr
             . . 4 4 f 4 4 5 5 4 4 f 4 4 . . 
             . . . . . f f f f f f . . . . . 
             . . . . . f f . . f f . . . . . 
-            `, img`
+            `,img`
             . . . . . . . . . . . . . . . . 
             . . . . . . f f f f . . . . . . 
             . . . . f f f 2 2 f f f . . . . 
@@ -392,8 +387,8 @@ controller.player1.onButtonEvent(ControllerButton.Down, ControllerButtonEvent.Pr
             . . . . . f f f f f f f . . . . 
             . . . . . . . . . f f f . . . . 
             `],
-            500,
-            false
+        500,
+        false
         )
     }
 })
@@ -411,6 +406,11 @@ let PLAYERDAM = 0
 let chargeLevel = 0
 let Attacker: Sprite = null
 let Enemy1 = null
+enum ActionKind {
+    Walking,
+    Idle,
+    Jumping
+}
 Attacker = sprites.create(img`
     ........................
     ....ffffff..............
@@ -439,7 +439,7 @@ Attacker = sprites.create(img`
     `, SpriteKind.Player)
 controller.moveSprite(Attacker)
 effects.blizzard.startScreenEffect()
-tiles.setCurrentTilemap(tilemap`level3`)
+tiles.setCurrentTilemap(tilemap`level1`)
 scene.cameraFollowSprite(Attacker)
 tiles.placeOnTile(Attacker, tiles.getTileLocation(10, 3))
 chargeLevel = 0
@@ -484,4 +484,3 @@ game.onUpdateInterval(10000, function () {
     EnemySpawn = [0, 1]
     ALIEN.setPosition(randint(0, scene.screenWidth()), 0)
 })
-
