@@ -8,11 +8,8 @@ function CHARGEVISUAL (mySprite: Sprite, num: number) {
 	
 }
 function ENEMYHP (num: number, mySprite: Sprite) {
-    if (ENEMY_HP.value == 50) {
-        ENEMY_HP.setColor(7, 7)
-    }
-    if (ENEMY_HP.value < 25) {
-        ENEMY_HP.setColor(4, 2)
+    if (ENEMY_HP.value < 20) {
+        ENEMY_HP.setColor(2, 2)
     }
     if (ENEMY_HP.value == 0) {
         ENEMY_HP.setColor(2, 2)
@@ -393,7 +390,6 @@ controller.player1.onButtonEvent(ControllerButton.Down, ControllerButtonEvent.Pr
     }
 })
 sprites.onOverlap(SpriteKind.Player, SpriteKind.Enemy, function (sprite, otherSprite) {
-    sprites.destroy(ALIEN)
     ApplyDamage(HP.value, Damage, Attacker)
     HP2(1, Attacker)
 })
@@ -468,13 +464,13 @@ game.onUpdateInterval(10000, function () {
         . . 3 3 f e e e e e 3 3 . . . . 
         . 3 3 e e e e e e e e 3 3 . . . 
         . 3 b e e 3 3 e 3 e f e 3 . . . 
-        `, SpriteKind.Player)
+        `, SpriteKind.Enemy)
     ALIEN.startEffect(effects.blizzard, 500)
     ALIEN.follow(Attacker, 20)
     EnemySpawn = [0, 1]
     ALIEN.setPosition(randint(0, scene.screenWidth()), 0)
-    ENEMY_HP = statusbars.create(20, 4, StatusBarKind.Health)
-    ENEMY_HP.value = 50
+    ENEMY_HP = statusbars.create(10, 4, StatusBarKind.EnemyHealth)
+    ENEMY_HP.value = 30
     ENEMY_HP.attachToSprite(ALIEN)
     ENEMY_HP.setLabel("HP")
 })
