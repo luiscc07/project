@@ -4,20 +4,40 @@ namespace SpriteKind {
 namespace StatusBarKind {
     export const CHARGE = StatusBarKind.create()
 }
-function CHARGEVISUAL (mySprite: Sprite, num: number) {
-	
-}
 function ENEMYHP (num: number, mySprite: Sprite) {
-    if (ENEMY_HP.value < 20) {
-        ENEMY_HP.setColor(2, 2)
+    if (ENEMY_HP.value < 75) {
+        ENEMY_HP.setColor(5, 2)
     }
-    if (ENEMY_HP.value == 0) {
-        ENEMY_HP.setColor(2, 2)
+    if (ENEMY_HP.value < 50) {
+        ENEMY_HP.setColor(4, 2)
     }
 }
 controller.B.onEvent(ControllerButtonEvent.Pressed, function () {
-    PLAYERDAM = PLAYERDAM + 2
+    PLAYERDAM = PLAYERDAM + chargeLevel * 2
+    if (SLASH) {
+        SLASH.destroy()
+        SLASH = sprites.createProjectileFromSprite(img`
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . 2 2 . . . . . . . 
+            . . . . . . 3 1 1 3 . . . . . . 
+            . . . . . 2 1 1 1 1 2 . . . . . 
+            . . . . . 2 1 1 1 1 2 . . . . . 
+            . . . . . . 3 1 1 3 . . . . . . 
+            . . . . . . . 2 2 . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            `, Attacker, 50, 0)
+        SLASH.follow(ALIEN)
+    }
     chargeLevel = 0
+    CHARGE2.value = chargeLevel
 })
 controller.player1.onButtonEvent(ControllerButton.Up, ControllerButtonEvent.Pressed, function () {
     if (HP.value > 0) {
@@ -97,8 +117,12 @@ controller.player1.onButtonEvent(ControllerButton.Up, ControllerButtonEvent.Pres
         )
     }
 })
+statusbars.onStatusReached(StatusBarKind.Magic, statusbars.StatusComparison.LTE, statusbars.ComparisonType.Fixed, 2.5, function (status) {
+    CHARGE2.setColor(2, 9, 2)
+})
 controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
-    chargeLevel = chargeLevel + 1
+    chargeLevel = chargeLevel + 0.5
+    CHARGE2.value = chargeLevel
 })
 function ENEMYTAKEDAMAGE (num: number, num2: number, mySprite: Sprite) {
     ENEMY_HP.value = ENEMY_HP.value - PLAYERDAM
@@ -107,10 +131,15 @@ function ENEMYTAKEDAMAGE (num: number, num2: number, mySprite: Sprite) {
     }
 }
 sprites.onOverlap(SpriteKind.Enemy, SpriteKind.Projectile, function (sprite, otherSprite) {
-    let SLASH: Sprite = null
     sprites.destroy(SLASH)
     ENEMYTAKEDAMAGE(ENEMY_HP.value, PLAYERDAM, ALIEN)
     ENEMYHP(1, ALIEN)
+})
+statusbars.onZero(StatusBarKind.Magic, function (status) {
+    CHARGE2.setColor(2, 9, 2)
+})
+statusbars.onStatusReached(StatusBarKind.Magic, statusbars.StatusComparison.LTE, statusbars.ComparisonType.Fixed, 5, function (status) {
+    CHARGE2.setColor(2, 9, 2)
 })
 controller.player1.onButtonEvent(ControllerButton.Right, ControllerButtonEvent.Pressed, function () {
     if (HP.value > 0) {
@@ -191,8 +220,8 @@ controller.player1.onButtonEvent(ControllerButton.Right, ControllerButtonEvent.P
     }
 })
 function HP2 (num: number, mySprite: Sprite) {
-    if (HP.value == 100) {
-        HP.setColor(7, 7, 2)
+    if (HP.value < 75) {
+        HP.setColor(5, 2, 2)
     }
     if (HP.value < 50) {
         HP.setColor(4, 2, 2)
@@ -396,10 +425,12 @@ sprites.onOverlap(SpriteKind.Player, SpriteKind.Enemy, function (sprite, otherSp
 let EnemySpawn: number[] = []
 let ALIEN: Sprite = null
 let ENEMY_HP: StatusBarSprite = null
+let CHARGE2: StatusBarSprite = null
 let HP: StatusBarSprite = null
+let chargeLevel = 0
 let Damage = 0
 let PLAYERDAM = 0
-let chargeLevel = 0
+let SLASH: Sprite = null
 let Attacker: Sprite = null
 Attacker = sprites.create(img`
     ........................
@@ -428,23 +459,41 @@ Attacker = sprites.create(img`
     ........................
     `, SpriteKind.Player)
 controller.moveSprite(Attacker)
+SLASH = sprites.create(img`
+    . . . . . . . . . . . . . . . . 
+    . . . . . . . . . . . . . . . . 
+    . . . . . . . . . . . . . . . . 
+    . . . . . . . . . . . . . . . . 
+    . . . . . . . . . . . . . . . . 
+    . . . . . . . . . . . . . . . . 
+    . . . . . . . . . . . . . . . . 
+    . . . . . . . . . . . . . . . . 
+    . . . . . . . . . . . . . . . . 
+    . . . . . . . . . . . . . . . . 
+    . . . . . . . . . . . . . . . . 
+    . . . . . . . . . . . . . . . . 
+    . . . . . . . . . . . . . . . . 
+    . . . . . . . . . . . . . . . . 
+    . . . . . . . . . . . . . . . . 
+    . . . . . . . . . . . . . . . . 
+    `, SpriteKind.Projectile)
 effects.blizzard.startScreenEffect()
 tiles.setCurrentTilemap(tilemap`level1`)
 scene.cameraFollowSprite(Attacker)
 tiles.placeOnTile(Attacker, tiles.getTileLocation(10, 3))
-chargeLevel = 0
-PLAYERDAM = 10
+PLAYERDAM = 5
 Damage = 5
+chargeLevel = 0
 HP = statusbars.create(10, 4, StatusBarKind.Health)
 HP.setLabel("HP")
 HP.attachToSprite(Attacker)
 HP.value = 100
 HP.max = 100
-let CHARGE2 = statusbars.create(10, 4, StatusBarKind.CHARGE)
-CHARGE2.setLabel("ATK")
+CHARGE2 = statusbars.create(10, 4, StatusBarKind.Magic)
+CHARGE2.setLabel("CHRG")
 CHARGE2.attachToSprite(Attacker)
 CHARGE2.value = chargeLevel
-CHARGE2.max = 10
+CHARGE2.max = 5
 CHARGE2.positionDirection(CollisionDirection.Bottom)
 game.onUpdateInterval(10000, function () {
     ALIEN = sprites.create(img`
@@ -470,7 +519,7 @@ game.onUpdateInterval(10000, function () {
     EnemySpawn = [0, 1]
     ALIEN.setPosition(randint(0, scene.screenWidth()), 0)
     ENEMY_HP = statusbars.create(10, 4, StatusBarKind.EnemyHealth)
-    ENEMY_HP.value = 30
+    ENEMY_HP.value = 100
     ENEMY_HP.attachToSprite(ALIEN)
     ENEMY_HP.setLabel("HP")
 })
