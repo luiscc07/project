@@ -5,18 +5,18 @@ namespace StatusBarKind {
     export const CHARGE = StatusBarKind.create()
 }
 function ENEMYHP (num: number, mySprite: Sprite) {
-    if (ENEMY_HP.value < 75) {
+    if (ENEMY_HP.value < 65) {
         ENEMY_HP.setColor(5, 2)
     }
-    if (ENEMY_HP.value < 50) {
+    if (ENEMY_HP.value < 35) {
         ENEMY_HP.setColor(4, 2)
     }
 }
 controller.B.onEvent(ControllerButtonEvent.Pressed, function () {
     PLAYERDAM = PLAYERDAM + chargeLevel * 2
-    if (SLASH) {
-        SLASH.destroy()
-        SLASH = sprites.createProjectileFromSprite(img`
+    if (PLASMA) {
+        PLASMA.destroy()
+        PLASMA = sprites.createProjectileFromSprite(img`
             . . . . . . . . . . . . . . . . 
             . . . . . . . . . . . . . . . . 
             . . . . . . . . . . . . . . . . 
@@ -34,7 +34,7 @@ controller.B.onEvent(ControllerButtonEvent.Pressed, function () {
             . . . . . . . . . . . . . . . . 
             . . . . . . . . . . . . . . . . 
             `, Attacker, 50, 0)
-        SLASH.follow(ALIEN)
+        PLASMA.follow(ALIEN)
     }
     chargeLevel = 0
     CHARGE2.value = chargeLevel
@@ -121,7 +121,8 @@ statusbars.onStatusReached(StatusBarKind.Magic, statusbars.StatusComparison.LTE,
     CHARGE2.setColor(2, 9, 2)
 })
 controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
-    chargeLevel = chargeLevel + 0.5
+    CONSTRAIN = Math.constrain(chargeLevel, 0, 5)
+    chargeLevel = chargeLevel + 1
     CHARGE2.value = chargeLevel
 })
 function ENEMYTAKEDAMAGE (num: number, num2: number, mySprite: Sprite) {
@@ -131,7 +132,7 @@ function ENEMYTAKEDAMAGE (num: number, num2: number, mySprite: Sprite) {
     }
 }
 sprites.onOverlap(SpriteKind.Enemy, SpriteKind.Projectile, function (sprite, otherSprite) {
-    sprites.destroy(SLASH)
+    sprites.destroy(PLASMA)
     ENEMYTAKEDAMAGE(ENEMY_HP.value, PLAYERDAM, ALIEN)
     ENEMYHP(1, ALIEN)
 })
@@ -423,6 +424,7 @@ sprites.onOverlap(SpriteKind.Player, SpriteKind.Enemy, function (sprite, otherSp
     HP2(1, Attacker)
 })
 let EnemySpawn: number[] = []
+let CONSTRAIN = 0
 let ALIEN: Sprite = null
 let ENEMY_HP: StatusBarSprite = null
 let CHARGE2: StatusBarSprite = null
@@ -430,7 +432,7 @@ let HP: StatusBarSprite = null
 let chargeLevel = 0
 let Damage = 0
 let PLAYERDAM = 0
-let SLASH: Sprite = null
+let PLASMA: Sprite = null
 let Attacker: Sprite = null
 Attacker = sprites.create(img`
     ........................
@@ -459,7 +461,7 @@ Attacker = sprites.create(img`
     ........................
     `, SpriteKind.Player)
 controller.moveSprite(Attacker)
-SLASH = sprites.create(img`
+PLASMA = sprites.create(img`
     . . . . . . . . . . . . . . . . 
     . . . . . . . . . . . . . . . . 
     . . . . . . . . . . . . . . . . 
@@ -482,7 +484,7 @@ tiles.setCurrentTilemap(tilemap`level1`)
 scene.cameraFollowSprite(Attacker)
 tiles.placeOnTile(Attacker, tiles.getTileLocation(10, 3))
 PLAYERDAM = 5
-Damage = 5
+Damage = 10
 chargeLevel = 0
 HP = statusbars.create(10, 4, StatusBarKind.Health)
 HP.setLabel("HP")
