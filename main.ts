@@ -423,8 +423,10 @@ sprites.onOverlap(SpriteKind.Player, SpriteKind.Enemy, function (sprite, otherSp
     ApplyDamage(HP.value, Damage, Attacker)
     HP2(1, Attacker)
 })
-let EnemySpawn: number[] = []
+let EnemySpawnNum: Image[] = []
+let EnemyPic: number[] = []
 let CONSTRAIN = 0
+let EnemySpawn: number[] = []
 let ALIEN: Sprite = null
 let ENEMY_HP: StatusBarSprite = null
 let CHARGE2: StatusBarSprite = null
@@ -480,7 +482,7 @@ PLASMA = sprites.create(img`
     . . . . . . . . . . . . . . . . 
     `, SpriteKind.Projectile)
 effects.blizzard.startScreenEffect()
-tiles.setCurrentTilemap(tilemap`level1`)
+tiles.setCurrentTilemap(tilemap`level7`)
 scene.cameraFollowSprite(Attacker)
 tiles.placeOnTile(Attacker, tiles.getTileLocation(10, 3))
 PLAYERDAM = 5
@@ -497,7 +499,7 @@ CHARGE2.attachToSprite(Attacker)
 CHARGE2.value = chargeLevel
 CHARGE2.max = 5
 CHARGE2.positionDirection(CollisionDirection.Bottom)
-game.onUpdateInterval(10000, function () {
+game.onUpdateInterval(1000, function () {
     ALIEN = sprites.create(img`
         . . . . . . . . . . . . . . . . 
         . . . . . . . . . . . . . . . . 
@@ -518,8 +520,99 @@ game.onUpdateInterval(10000, function () {
         `, SpriteKind.Enemy)
     ALIEN.startEffect(effects.blizzard, 500)
     ALIEN.follow(Attacker, 20)
-    EnemySpawn = [0, 1]
-    ALIEN.setPosition(randint(0, scene.screenWidth()), 0)
+    EnemySpawnNum = [
+    img`
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . 3 3 3 3 . . . . . . . 
+        . . . . 3 e e e e e . . . . . . 
+        . . . 3 e e f e e e 3 . . . . . 
+        . . . 3 b e e e e b b . . . . . 
+        . 3 3 3 1 e e 1 e e 3 . . . . . 
+        3 e e 3 e e e 1 1 e 3 . . . . . 
+        . 3 3 3 e 1 e e 1 e f 3 . . . . 
+        . . 3 f 1 1 1 e e e 3 . . . . . 
+        . . 3 e e 1 1 1 e e 3 3 . . . . 
+        . . 3 3 e e 1 e e 3 e b 3 . . . 
+        . . . 3 e e b e f 3 e e 3 . . . 
+        . . 3 3 f e e e e e 3 3 . . . . 
+        . 3 3 e e e e e e e e 3 3 . . . 
+        . 3 b e e 3 3 e 3 e f e 3 . . . 
+        `,
+    img`
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . 3 3 3 3 . . . . . . . 
+        . . . . 3 e e e e e . . . . . . 
+        . . . 3 e e f e e e 3 . . . . . 
+        . . . 3 b e e e e b b . . . . . 
+        . 3 3 3 1 e e 1 e e 3 . . . . . 
+        3 e e 3 e e e 1 1 e 3 . . . . . 
+        . 3 3 3 e 1 e e 1 e f 3 . . . . 
+        . . 3 f 1 1 1 e e e 3 . . . . . 
+        . . 3 e e 1 1 1 e e 3 3 . . . . 
+        . . 3 3 e e 1 e e 3 e b 3 . . . 
+        . . . 3 e e b e f 3 e e 3 . . . 
+        . . 3 3 f e e e e e 3 3 . . . . 
+        . 3 3 e e e e e e e e 3 3 . . . 
+        . 3 b e e 3 3 e 3 e f e 3 . . . 
+        `,
+    img`
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . 3 3 3 3 . . . . . . . 
+        . . . . 3 e e e e e . . . . . . 
+        . . . 3 e e f e e e 3 . . . . . 
+        . . . 3 b e e e e b b . . . . . 
+        . 3 3 3 1 e e 1 e e 3 . . . . . 
+        3 e e 3 e e e 1 1 e 3 . . . . . 
+        . 3 3 3 e 1 e e 1 e f 3 . . . . 
+        . . 3 f 1 1 1 e e e 3 . . . . . 
+        . . 3 e e 1 1 1 e e 3 3 . . . . 
+        . . 3 3 e e 1 e e 3 e b 3 . . . 
+        . . . 3 e e b e f 3 e e 3 . . . 
+        . . 3 3 f e e e e e 3 3 . . . . 
+        . 3 3 e e e e e e e e 3 3 . . . 
+        . 3 b e e 3 3 e 3 e f e 3 . . . 
+        `,
+    img`
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . 3 3 3 3 . . . . . . . 
+        . . . . 3 e e e e e . . . . . . 
+        . . . 3 e e f e e e 3 . . . . . 
+        . . . 3 b e e e e b b . . . . . 
+        . 3 3 3 1 e e 1 e e 3 . . . . . 
+        3 e e 3 e e e 1 1 e 3 . . . . . 
+        . 3 3 3 e 1 e e 1 e f 3 . . . . 
+        . . 3 f 1 1 1 e e e 3 . . . . . 
+        . . 3 e e 1 1 1 e e 3 3 . . . . 
+        . . 3 3 e e 1 e e 3 e b 3 . . . 
+        . . . 3 e e b e f 3 e e 3 . . . 
+        . . 3 3 f e e e e e 3 3 . . . . 
+        . 3 3 e e e e e e e e 3 3 . . . 
+        . 3 b e e 3 3 e 3 e f e 3 . . . 
+        `,
+    img`
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . 3 3 3 3 . . . . . . . 
+        . . . . 3 e e e e e . . . . . . 
+        . . . 3 e e f e e e 3 . . . . . 
+        . . . 3 b e e e e b b . . . . . 
+        . 3 3 3 1 e e 1 e e 3 . . . . . 
+        3 e e 3 e e e 1 1 e 3 . . . . . 
+        . 3 3 3 e 1 e e 1 e f 3 . . . . 
+        . . 3 f 1 1 1 e e e 3 . . . . . 
+        . . 3 e e 1 1 1 e e 3 3 . . . . 
+        . . 3 3 e e 1 e e 3 e b 3 . . . 
+        . . . 3 e e b e f 3 e e 3 . . . 
+        . . 3 3 f e e e e e 3 3 . . . . 
+        . 3 3 e e e e e e e e 3 3 . . . 
+        . 3 b e e 3 3 e 3 e f e 3 . . . 
+        `
+    ]
+    tiles.placeOnRandomTile(ALIEN, sprites.dungeon.collectibleInsignia)
     ENEMY_HP = statusbars.create(10, 4, StatusBarKind.EnemyHealth)
     ENEMY_HP.value = 100
     ENEMY_HP.attachToSprite(ALIEN)
